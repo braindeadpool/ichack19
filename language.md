@@ -7,7 +7,7 @@
 * U: up
 * D: down
 * W: wink any
-* R: roll
+* O: roll
 * Wl: wink left
 * Wr: wink right
 
@@ -34,7 +34,7 @@
 * Emergency: W# + options: dizziness, nose block, cramps, palpitations, choking
 * Danger: S*B# + options: someone is hurting me, sexual abuse, thief, call police
 * I have a problem: WW + options: feeling cold, I want to spit, feeling hot, food stuck in teeth, headache
-* Transfer: WWR + options: chair, bed, sofa, wheelchair, dining table
+* Transfer: WWO + options: chair, bed, sofa, wheelchair, dining table
 * I love you: WWW
 * I'm sorry: UW
 * Thank you: WrWlBB
@@ -42,26 +42,26 @@
 * Let's talk: W
 * Let's go out in the open: BUW
 * I want to go home: LRW
-* I want to meet my pet: LR
-* Congratulations! BBRBB
+* I want to meet my pet: LO
+* Congratulations! BBOBB
 * I'm proud of you: BBS*
 * I'm in pain: WB + options: different body positions
-* Change position: RW + options: sit, lie straight, turn left, turn right
+* Change position: OW + options: sit, lie straight, turn left, turn right
 * I feel like eating: UD + options: fruits, my favourite, cold beverage, sweet/dessert, spicy food, hot beverage
-* Entertainment: R + options: TV, music, newspaper, tablet, movie
-* Electrical appliance: RB + options: fan, AC, light, TV, heater, increase, decrease
+* Entertainment: O + options: TV, music, newspaper, tablet, movie
+* Electrical appliance: OB + options: fan, AC, light, TV, heater, increase, decrease
 * Wipe: WlWlWrWr + options: different body and face positions
 * Move: R^ + options: different body positions
 * Massage: WBB, options: different body positions
-* Hold: BRW, options: different body positions
+* Hold: BOW, options: different body positions
 * Lift: BBU, options: different body positions
 * Wash: WlBWr, options: different body positions
 * Scratch: WrWrWlWl, options: different body positions
 * Change: WWB, options: clothes, pillow/pillow cover, diaper, bedsheet/blanket
 * Adjust: WWBB, options: blanket, clothes, specs, hair, pillow
 * Happy birthday/anniversary/festival/Mother's Day/...: UDW
-* Start word typing (go to alphabet processing): BRB
-* Undefined (custom): UDWW, RBRW, LBBR, RLBBB, WlWrWr, WlWlBWrWr
+* Start word typing (go to alphabet processing): BOB
+* Undefined (custom): UDWW, OBOW, LBBR, RLBBB, WlWrWr, WlWlBWrWr
 
 ## Alphabet for word typing
 * a: B
