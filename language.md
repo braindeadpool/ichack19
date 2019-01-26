@@ -13,7 +13,7 @@
 
 ## Optional extra information coming after a basic element
 * \*: long
-* \#: furious
+* \#: furious (very fast)
 * \^: keep doing that
 
 # Commands
