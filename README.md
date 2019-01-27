@@ -2,6 +2,7 @@
 ## Eye language monitor for paralysed persons.
 
 ## Libraries/Projects used
+* Drishti: https://github.com/braindeadpool/drishti ([license](https://github.com/braindeadpool/drishti/blob/master/LICENSE))
 * CameraView: https://github.com/natario1/CameraView ([MIT license](https://github.com/natario1/CameraView/blob/master/LICENSE))
 * MaryTTS: https://github.com/marytts/marytts ([license](https://github.com/marytts/marytts/blob/master/LICENSE.md))
 * voice-cmu-rms-hsmm for MaryTTS: https://github.com/marytts/voice-cmu-rms-hsmm ([license](https://github.com/marytts/voice-cmu-rms-hsmm/blob/master/LICENSE.txt))
