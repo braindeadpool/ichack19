@@ -6,6 +6,7 @@ from flask import Flask, flash, request, redirect, url_for, jsonify, session
 from werkzeug.utils import secure_filename
 from copy import deepcopy
 import logging
+import time
 
 logging.basicConfig()
 logging.getLogger().setLevel(logging.INFO)
@@ -28,6 +29,20 @@ app = Flask(__name__)
 def allowed_file(filename):
     return '.' in filename and filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
 
+def _clean_face_json(json_data):
+    """
+    clean the json output from Drishti binary
+    """
+    json_data['faces'][0].pop("cereal_class_version")
+    json_data['faces'][0]["eye-full-left"].pop("cereal_class_version")
+    json_data['faces'][0]["eye-full-left"]["value1"].pop("cereal_class_version")
+    json_data['faces'][0]["eye-full-left"]["value1"]["roi"].pop("cereal_class_version")
+    json_data['faces'][0]["eye-full-left"]["value1"]["roi"]["value1"].pop("cereal_class_version")
+    json_data['faces'][0]["eye-full-left"]["value1"]["eyelids"][0].pop("cereal_class_version")
+    json_data['faces'][0]["eye-full-left"]["value1"]["iris"].pop("cereal_class_version")
+    json_data['faces'][0]["eye-full-left"]["value1"]["iris"]["size"].pop("cereal_class_version")
+    json_data['faces'][0]["eye-full-left"]["value1"]["inner"].pop("cereal_class_version")
+    return json_data
 
 @app.route('/')
 def index():
@@ -35,6 +50,7 @@ def index():
 
 @app.route('/api/image_to_eye_letters/', methods=['POST', 'GET'])
 def process_image():
+    api_response_start_time = time.time()
     if request.method == 'POST':
         logging.debug(request.files)
         # check if the post request has the file part
@@ -52,12 +68,15 @@ def process_image():
             filename = secure_filename(file.filename)
             image_save_path = os.path.join(UPLOAD_DIR, filename)
             file.save(image_save_path)
-            json_data = frame_to_face_contours(image_save_path, UPLOAD_DIR)
+            json_data = frame_to_face_contours(image_save_path, UPLOAD_DIR, api_response_start_time)
             return jsonify(json_data)
     return jsonify(DEFAULT_JSON_RESPONSE)
 
-def frame_to_face_contours(image_path, output_dir):
+def frame_to_face_contours(image_path, output_dir, api_response_start_time):
+    face_binary_start = time.time()
     command_output = subprocess.check_output(BASE_ARGS+[image_path, '-o', output_dir], stderr=subprocess.STDOUT)
+    face_binary_end = time.time()
+    logging.debug(f"Face binary command took {face_binary_end-face_binary_start} seconds")
     logging.debug(command_output)
     output_path = os.path.splitext(image_path)[0]+'.json'
     json_response = DEFAULT_JSON_RESPONSE.copy()
@@ -65,8 +84,11 @@ def frame_to_face_contours(image_path, output_dir):
         with open(output_path, 'r') as f:
             json_data = json.load(f)
             json_response['Success'] = True
-            json_response['Face'] = deepcopy(json_data)
-            json_response['DebugInfo'] = None
+            json_response['Face'] = deepcopy(_clean_face_json(json_data))
+            json_response['DebugInfo'] = {'Timing': {'FaceBinary': face_binary_end-face_binary_start,
+            'ServerResponse': time.time()-api_response_start_time}}
+    else:
+        json_response['DebugInfo'] = {'Timing': {'ServerResponse': time.time()-api_response_start_time}}
     return json_response
 
 def main():
