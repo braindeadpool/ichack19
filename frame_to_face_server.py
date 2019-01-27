@@ -20,7 +20,7 @@ UPLOAD_DIR = os.path.join('/Users/suraj_personal/projects/ichack19/temp_dir')
 
 DEFAULT_JSON_RESPONSE = {'Success': False,
     'Face' : None,
-    'DebugInfo': 'NOT_POST_REQUEST',
+    'DebugInfo': 'INVALID_REQUEST',
     }
 
 app = Flask(__name__)
@@ -51,26 +51,36 @@ def index():
 @app.route('/api/image_to_eye_letters/', methods=['POST', 'GET'])
 def process_image():
     api_response_start_time = time.time()
+    json_data = deepcopy(DEFAULT_JSON_RESPONSE)
     if request.method == 'POST':
         logging.debug(request.files)
         # check if the post request has the file part
         if 'file' not in request.files:
-            flash('No file part')
-            return redirect(request.url)
+            logging.debug("No file in request.files")
+            json_data['DebugInfo'] = 'NO_FILE_IN_POST_REQUEST'
+            return jsonify(json_data)
         file = request.files['file']
+        logging.debug(file)
         # if user does not select file, browser also
         # submit an empty part without filename
         if file.filename == '':
             flash('No selected file')
             logging.debug("No selected file")
-            return redirect(request.url)
+            json_data['DebugInfo'] = 'INVALID_FILENAME_IN_POST_REQUEST'
+            return jsonify(json_data)
         if file and allowed_file(file.filename):
             filename = secure_filename(file.filename)
             image_save_path = os.path.join(UPLOAD_DIR, filename)
             file.save(image_save_path)
             json_data = frame_to_face_contours(image_save_path, UPLOAD_DIR, api_response_start_time)
+            logging.debug(json_data)
             return jsonify(json_data)
-    return jsonify(DEFAULT_JSON_RESPONSE)
+
+    else:
+        logging.debug("Not post request")
+        json_data['DebugInfo'] = 'NOT_POST_REQUEST'
+        
+    return jsonify(json_data)
 
 def frame_to_face_contours(image_path, output_dir, api_response_start_time):
     face_binary_start = time.time()
