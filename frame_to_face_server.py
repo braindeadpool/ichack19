@@ -24,7 +24,7 @@ MAX_NUM_PROCESSES = 20
 
 DEFAULT_JSON_RESPONSE = {'Success': False,
     'Face' : None,
-    'DebugInfo': 'NOT_POST_REQUEST',
+    'DebugInfo': 'INVALID_REQUEST',
     }
 
 
@@ -218,7 +218,6 @@ def process_images():
         logging.debug("Not post request")
         json_data['DebugInfo'] = 'NOT_POST_REQUEST'
         return jsonify(json_data)
-
 
 def frame_to_face_contours(image_path, output_dir, api_response_start_time):
     face_binary_start = time.time()

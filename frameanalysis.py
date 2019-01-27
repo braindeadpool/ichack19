@@ -6,7 +6,6 @@ import logging
 logging.basicConfig()
 logging.getLogger().setLevel(logging.DEBUG)
 
-
 #eye is the json file of the detected image
 def eye_aspect_ratio_left(eye):
     g=eye["Face"]["faces"][0]["eye-full-left"]["value1"]
@@ -79,5 +78,3 @@ def message_decoder(message_array):
         return "call guardian"
     elif message_array==[1,2]:
         return "call doctor"
-
-
