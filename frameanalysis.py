@@ -100,38 +100,38 @@ word=[]
 #where response is the JSON file
 *****************************************************************************************
 
-	# coordinates to compute the eye aspect ratio for both eyes
-	leftEAR = eye_aspect_ratio_left(response)
-	rightEAR = eye_aspect_ratio_right(response)
+# coordinates to compute the eye aspect ratio for both eyes
+leftEAR = eye_aspect_ratio_left(response)
+rightEAR = eye_aspect_ratio_right(response)
 
-	# average the eye aspect ratio together for both eyes
-	ear = (leftEAR + rightEAR) / 2.0
+# average the eye aspect ratio together for both eyes
+ear = (leftEAR + rightEAR) / 2.0
 
 
-	# check to see if the eye aspect ratio is below the blink
-	# threshold, and if so, increment the blink frame counter
-	if ear < EYE_AR_THRESH:
-		COUNTERblink += 1
+# check to see if the eye aspect ratio is below the blink
+# threshold, and if so, increment the blink frame counter
+if ear < EYE_AR_THRESH:
+	COUNTERblink += 1
 
-    # check to see if the gaze is left
+	# check to see if the gaze is left
 	# , and if so, increment the left frame counter
-    elif l_or_r(response)=="left":
-        COUNTERleft+=1
+elif l_or_r(response)=="left":
+	COUNTERleft+=1
 
         # check to see if the gaze is right
 		# , and if so, increment the right frame counter
-    elif l_or_r(response)=="right":
-        COUNTERright+=1
+elif l_or_r(response)=="right":
+	COUNTERright+=1
         
 
-	# otherwise, the eye aspect ratio is not below the blink
-	# threshold
-	else:
-		# if the eyes were closed for a sufficient number of
-		# then increment the total number of blinks
-		if COUNTERblink >= EYE_AR_CONSEC_FRAMESshort:
-			TOTALblink += 1
-			word.append(1)
+# otherwise, the eye aspect ratio is not below the blink
+# threshold
+else:
+	# if the eyes were closed for a sufficient number of
+	# then increment the total number of blinks
+	if COUNTERblink >= EYE_AR_CONSEC_FRAMESshort:
+		TOTALblink += 1
+		word.append(1)
         elif COUNTERleft >= EYE_AR_CONSEC_FRAMESshort:
 			TOTALleft += 1
 			word.append(3)
@@ -142,17 +142,17 @@ word=[]
 # 			totallong+=1
 # 			word.append(0)
 
-		elif COUNTERblink>=confirm:
-			print("message encoded")
+	elif COUNTERblink>=confirm:
+		print("message encoded")
             #we pass the encoded info into the message_decoder
-            return message_decoder(word)
+            	return message_decoder(word)
             #reset the word array as we are sending only one command at a time
-			word=[]
+		word=[]
             
             
 
 		# reset the eye frame counter
-		COUNTERblink = 0
+	COUNTERblink = 0
         COUNTERleft=0
         COUNTERright=0
 
