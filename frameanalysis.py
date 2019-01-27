@@ -132,12 +132,12 @@ else:
 	if COUNTERblink >= EYE_AR_CONSEC_FRAMESshort:
 		TOTALblink += 1
 		word.append(1)
-        elif COUNTERleft >= EYE_AR_CONSEC_FRAMESshort:
-			TOTALleft += 1
-			word.append(3)
-        elif COUNTERright >= EYE_AR_CONSEC_FRAMESshort:
-			TOTALright += 1
-			word.append(2)
+    elif COUNTERleft >= EYE_AR_CONSEC_FRAMESshort:
+        TOTALleft += 1
+        word.append(3)
+    elif COUNTERright >= EYE_AR_CONSEC_FRAMESshort:
+        TOTALright += 1
+        word.append(2)
 # 		elif COUNTER>=EYE_AR_CONSEC_FRAMESlong and COUNTER<confirm:
 # 			totallong+=1
 # 			word.append(0)
@@ -145,15 +145,15 @@ else:
 	elif COUNTERblink>=confirm:
 		print("message encoded")
             #we pass the encoded info into the message_decoder
-            	return message_decoder(word)
+        return message_decoder(word)
             #reset the word array as we are sending only one command at a time
 		word=[]
             
             
 
 		# reset the eye frame counter
-	COUNTERblink = 0
-        COUNTERleft=0
-        COUNTERright=0
+    COUNTERblink = 0
+    COUNTERleft=0
+    COUNTERright=0
 
 
