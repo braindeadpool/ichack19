@@ -142,6 +142,7 @@ else:
 # 			totallong+=1
 # 			word.append(0)
 
+#If the User closes eyes for more that "confirm" no of frames then it means that he/she wants to send the message. 
 	elif COUNTERblink>=confirm:
 		print("message encoded")
             #we pass the encoded info into the message_decoder
