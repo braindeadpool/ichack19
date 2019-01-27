@@ -1,6 +1,7 @@
 import os
 import json
 import subprocess
+import multiprocessing
 import argparse
 from flask import Flask, flash, request, redirect, url_for, jsonify, session
 from werkzeug.utils import secure_filename
@@ -15,7 +16,7 @@ logging.getLogger().setLevel(logging.INFO)
 ALLOWED_EXTENSIONS = set(['png', 'jpg', 'jpeg'])
 FACE_BINARY_PATH = os.path.join('/Users/suraj_personal/projects/drishti/_builds/src/app/face/Release/drishti-face')
 ASSETS_PATH = os.path.join('/Users/suraj_personal/projects/drishti-assets/drishti_assets_full.json')
-BASE_ARGS = [FACE_BINARY_PATH, '-F', ASSETS_PATH, '-a', '-p', '--inner', '-i']
+BASE_ARGS = [FACE_BINARY_PATH, '-F', ASSETS_PATH, '-p', '--inner', '-i']
 UPLOAD_DIR = os.path.join('/Users/suraj_personal/projects/ichack19/temp_dir')
 
 DEFAULT_JSON_RESPONSE = {'Success': False,
@@ -52,24 +53,24 @@ def index():
 def process_image():
     api_response_start_time = time.time()
     if request.method == 'POST':
-        logging.debug(request.files)
         # check if the post request has the file part
         if 'file' not in request.files:
             flash('No file part')
             return redirect(request.url)
-        file = request.files['file']
-        # if user does not select file, browser also
-        # submit an empty part without filename
-        if file.filename == '':
-            flash('No selected file')
-            logging.debug("No selected file")
-            return redirect(request.url)
-        if file and allowed_file(file.filename):
-            filename = secure_filename(file.filename)
-            image_save_path = os.path.join(UPLOAD_DIR, filename)
-            file.save(image_save_path)
-            json_data = frame_to_face_contours(image_save_path, UPLOAD_DIR, api_response_start_time)
-            return jsonify(json_data)
+        file_list = request.files.getlist("file")
+        # logging.debug(request.files.getlist("file"))
+        json_responses = []
+        for file in file_list:
+            if file.filename == '':
+                flash('No selected file')
+                logging.debug("No selected file")
+                return redirect(request.url)
+            if file and allowed_file(file.filename):
+                filename = secure_filename(file.filename)
+                image_save_path = os.path.join(UPLOAD_DIR, filename)
+                file.save(image_save_path)
+                json_data = frame_to_face_contours(image_save_path, UPLOAD_DIR, api_response_start_time)
+                return jsonify(json_data)
     return jsonify(DEFAULT_JSON_RESPONSE)
 
 def frame_to_face_contours(image_path, output_dir, api_response_start_time):
